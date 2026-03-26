@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Work Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  font-family: Arial;
+  background: lightgrey;
+  margin:0;
+}
+
+.container{
+  max-width:800px;
+  margin:auto;
+  background:white;
+  padding:20px;
+  margin-top:30px;
+  border-radius:10px;
+}
+
+.header{
+  background: darkblue;
+  color:white;
+  padding:15px;
+  border-radius:10px;
+  text-align:center;
+  margin-bottom:15px;
+}
+
+.section{
+  margin-top:20px;
+  padding:15px;
+  background: whitesmoke;
+  border-radius:8px;
+}
+
+button.main{
+  margin-top:20px;
+  padding:12px;
+  width:100%;
+  background: linear-gradient(to right, blue, purple);
+  color:white;
+  border:none;
+  border-radius:8px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+#result{
+  margin-top:20px;
+  padding:15px;
+  background: lightblue;
+  border-radius:8px;
+}
+
+.progress{
+  width:100%;
+  background:#ddd;
+  height:15px;
+  border-radius:10px;
+  margin-top:8px;
+  overflow:hidden;
+}
+
+.progress-bar{
+  height:100%;
+  transition: width 0.8s ease;
+}
+</style>
+
+</head>
+
+<body>
+<script>
+if(!localStorage.getItem("loggedIn")){
+  window.location.href = "/login.html"
+}
+</script>
+
+<button onclick="goHome()" style="
+position:fixed;
+top:15px;
+left:15px;
+padding:8px 12px;
+background:white;
+border:1px solid gray;
+border-radius:20px;
+cursor:pointer;
+font-size:14px;
+box-shadow:0 2px 5px rgba(0,0,0,0.2);
+z-index:1000;
+">
+⬅ Home
+</button>
+
+<div class="container">
+
+<div class="header">
+<h2>Faculty Appraisal Dashboard</h2>
+</div>
+
+<label>Name</label>
+<input type="text" id="name" style="width:100%;padding:8px;margin-bottom:10px">
+
+<!-- Teaching -->
+<div class="section">
+<h3>Teaching (Max 33)</h3>
+
+<label><input type="checkbox" value="5" class="teach"> Student Credit Hours (5)</label><br>
+<label><input type="checkbox" value="3" class="teach"> Student Feedback (3)</label><br>
+<label><input type="checkbox" value="4" class="teach"> Class Percentage (4)</label><br>
+<label><input type="checkbox" value="4" class="teach"> Slow Learners Initiative (4)</label><br>
+<label><input type="checkbox" value="5" class="teach"> Course Development (5)</label><br>
+<label><input type="checkbox" value="2" class="teach"> Course File (2)</label><br>
+<label><input type="checkbox" value="2" class="teach"> Value Added Program (2)</label><br>
+<label><input type="checkbox" value="3" class="teach"> Proctoring / Mentor (3)</label><br>
+<label><input type="checkbox" value="2" class="teach"> Industry Connectivity (2)</label><br>
+<label><input type="checkbox" value="3" class="teach"> Publication with Students (3)</label>
+</div>
+
+<!-- Research -->
+<div class="section">
+<h3>Research (Max 48)</h3>
+
+<label><input type="checkbox" value="10" class="res"> Journal Paper (10)</label><br>
+<label><input type="checkbox" value="8" class="res"> Citations (8)</label><br>
+<label><input type="checkbox" value="7" class="res"> Patent (7)</label><br>
+<label><input type="checkbox" value="7" class="res"> Govt Sponsored Project (7)</label><br>
+<label><input type="checkbox" value="6" class="res"> Consultancy (6)</label><br>
+<label><input type="checkbox" value="2" class="res"> Conference / Book Chapter (2)</label><br>
+<label><input type="checkbox" value="2" class="res"> Attending Conference (2)</label><br>
+<label><input type="checkbox" value="2" class="res"> PhD Awarded (2)</label><br>
+<label><input type="checkbox" value="3" class="res"> International Network (3)</label><br>
+<label><input type="checkbox" value="3" class="res"> Faculty Startup (3)</label>
+</div>
+
+<!-- Extension -->
+<div class="section">
+<h3>Extension & Administration (Max 19)</h3>
+
+<label><input type="checkbox" value="4" class="ext"> Event Organization (4)</label><br>
+<label><input type="checkbox" value="3" class="ext"> FDP (3)</label><br>
+<label><input type="checkbox" value="2" class="ext"> Fellowship (2)</label><br>
+<label><input type="checkbox" value="4" class="ext"> Administrative Work (4)</label><br>
+<label><input type="checkbox" value="2" class="ext"> International Visit (2)</label><br>
+<label><input type="checkbox" value="4" class="ext"> Institutional Activities (4)</label>
+</div>
+
+<label>Deadline</label>
+<input type="date" id="deadline">
+
+<button class="main" onclick="calculate()">Calculate Performance</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+function goHome(){
+  window.location.href = "/index.html"
+}
+
+function sum(className){
+  let total = 0
+  document.querySelectorAll("."+className+":checked")
+  .forEach(el => total += Number(el.value))
+  return total
+}
+
+function getColor(value){
+  if(value < 40) return "red"
+  if(value < 70) return "orange"
+  return "green"
+}
+
+function calculate(){
+
+let teaching = sum("teach")
+let research = sum("res")
+let extension = sum("ext")
+
+let total = teaching + research + extension
+let remaining = total >= 70 ? 0 : 70 - total
+let deadline = document.getElementById("deadline").value
+
+let suggestion = ""
+
+if(total < 70){
+  if(research < 30){
+    suggestion = "Focus more on research activities"
+  } else if(teaching < 20){
+    suggestion = "Improve teaching contributions"
+  } else {
+    suggestion = "Complete extension activities"
+  }
+}
+
+/* ✅ ADDED: DAYS LEFT CALCULATION */
+let daysLeftText = ""
+if(deadline){
+  let today = new Date()
+  let end = new Date(deadline)
+  let days = Math.ceil((end - today) / (1000 * 60 * 60 * 24))
+
+  if(days >= 0){
+    daysLeftText = `<p><b>Days Left:</b> ${days} days</p>`
+  } else {
+    daysLeftText = `<p style="color:red;"><b>Deadline Passed</b></p>`
+  }
+}
+
+document.getElementById("result").innerHTML = `
+<h3>Total: ${total}/100</h3>
+
+<p><b>Teaching:</b> ${teaching}</p>
+<div class="progress">
+<div class="progress-bar" style="width:${(teaching/33)*100}%;background:${getColor((teaching/33)*100)}"></div>
+</div>
+
+<p><b>Research:</b> ${research}</p>
+<div class="progress">
+<div class="progress-bar" style="width:${(research/48)*100}%;background:${getColor((research/48)*100)}"></div>
+</div>
+
+<p><b>Extension:</b> ${extension}</p>
+<div class="progress">
+<div class="progress-bar" style="width:${(extension/19)*100}%;background:${getColor((extension/19)*100)}"></div>
+</div>
+
+<p><b>Remaining:</b> ${remaining}</p>
+<p><b>Status:</b> <span style="color:${total>=70?'green':'red'}">${total>=70?'Eligible':'Not Eligible'}</span></p>
+
+<p><b>Suggestion:</b> ${suggestion || "Good performance"}</p>
+<p><b>Deadline:</b> ${deadline || "Not set"}</p>
+${daysLeftText}
+`
+
+fetch("/save",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({teaching,research,extension,total})
+})
+
+}
+
+</script>
+
+</body>
+</html>

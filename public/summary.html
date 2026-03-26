@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Performance Summary</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body{
+  font-family: Arial;
+  background: lightgrey;
+  margin:0;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  background:white;
+  padding:20px;
+  margin-top:40px;
+  border-radius:10px;
+  text-align:center;
+}
+
+.box{
+  background: whitesmoke;
+  padding:15px;
+  margin:10px 0;
+  border-radius:8px;
+}
+
+.status{
+  font-weight:bold;
+  font-size:18px;
+}
+
+button{
+  position:fixed;
+  top:15px;
+  left:15px;
+  padding:8px 12px;
+  border-radius:20px;
+  border:1px solid gray;
+  background:white;
+  cursor:pointer;
+}
+
+.charts{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:40px;
+  margin-top:20px;
+  flex-wrap:wrap;
+}
+
+.bar-container{
+  width:450px;
+}
+
+.pie-container{
+  width:250px;
+}
+
+canvas{
+  width:100% !important;
+  height:auto !important;
+}
+</style>
+</head>
+
+<body>
+
+<script>
+if(!localStorage.getItem("loggedIn")){
+  window.location.href = "/login.html"
+}
+</script>
+
+<button onclick="goHome()">⬅ Home</button>
+
+<div class="container">
+
+<h2>Performance Summary</h2>
+
+<div id="summary"></div>
+
+<div class="charts">
+  <div class="bar-container">
+    <canvas id="barChart"></canvas>
+  </div>
+  <div class="pie-container">
+    <canvas id="pieChart"></canvas>
+  </div>
+</div>
+
+</div>
+
+<script>
+
+function goHome(){
+  window.location.href = "/index.html"
+}
+
+async function loadSummary(){
+
+try{
+
+let res = await fetch("/data")
+let data = await res.json()
+
+if(!data || !data.total){
+  document.getElementById("summary").innerHTML = "No data available"
+  return
+}
+
+let remaining = data.total >= 70 ? 0 : 70 - data.total
+
+document.getElementById("summary").innerHTML = `
+<div class="box"><b>Total Score:</b> ${data.total}/100</div>
+<div class="box"><b>Remaining to Pass:</b> ${remaining}</div>
+<div class="box status" style="color:${data.total>=70?'green':'red'}">
+${data.total>=70?'Eligible':'Not Eligible'}
+</div>
+`
+
+new Chart(document.getElementById("barChart"), {
+  type: "bar",
+  data: {
+    labels: ["Teaching", "Research", "Extension"],
+    datasets: [{
+      label: "Points",
+      data: [data.teaching, data.research, data.extension]
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 50
+      }
+    }
+  }
+})
+
+new Chart(document.getElementById("pieChart"), {
+  type: "pie",
+  data: {
+    labels: ["Teaching", "Research", "Extension"],
+    datasets: [{
+      data: [data.teaching, data.research, data.extension],
+      backgroundColor: ["#3b82f6","#22c55e","#f59e0b"]
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "bottom"
+      }
+    }
+  }
+})
+
+}catch(err){
+  document.getElementById("summary").innerHTML = "Error loading data"
+}
+
+}
+
+window.onload = loadSummary
+
+</script>
+
+</body>
+</html>

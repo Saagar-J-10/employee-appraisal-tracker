@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Extension Criteria</title>
+
+<style>
+body{font-family:Arial;background:#f3f6fb;}
+.container{max-width:900px;margin:auto;background:white;padding:20px;margin-top:30px;border-radius:10px;}
+table{width:100%;border-collapse:collapse;margin-top:20px;}
+th,td{border:1px solid #ccc;padding:10px;}
+th{background:#ea580c;color:white;}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.nav button{padding:8px;border:none;border-radius:6px;background:#ddd;}
+.total{margin-top:10px;font-weight:bold;}
+</style>
+</head>
+
+<body>
+
+<script>
+if(!localStorage.getItem("loggedIn")) window.location.href="/login.html"
+</script>
+
+<div class="container">
+
+<div class="nav">
+<button onclick="go('/index.html')">Home</button>
+<button onclick="go('/academic.html')">Teaching</button>
+<button onclick="go('/research.html')">Research</button>
+<button onclick="go('/extension.html')">Extension</button>
+<button onclick="go('/tracker.html')">Tracker</button>
+<button onclick="go('/summary.html')">Summary</button>
+</div>
+
+<h2>🏢 Extension Criteria</h2>
+
+<table>
+<tr><th>Activity</th><th>Points</th></tr>
+<tr><td>Event</td><td>4</td></tr>
+<tr><td>FDP</td><td>3</td></tr>
+<tr><td>Fellowship</td><td>2</td></tr>
+<tr><td>Admin Work</td><td>4</td></tr>
+<tr><td>Visit</td><td>2</td></tr>
+<tr><td>Activities</td><td>4</td></tr>
+</table>
+
+<div class="total">Total Points: 19</div>
+
+</div>
+
+<script>
+function go(p){window.location.href=p}
+</script>
+
+</body>
+</html>

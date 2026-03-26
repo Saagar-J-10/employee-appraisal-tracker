@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Teaching Criteria</title>
+
+<style>
+body{font-family:Arial;background:#f3f6fb;}
+.container{max-width:900px;margin:auto;background:white;padding:20px;margin-top:30px;border-radius:10px;}
+table{width:100%;border-collapse:collapse;margin-top:20px;}
+th,td{border:1px solid #ccc;padding:10px;}
+th{background:#2563eb;color:white;}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.nav button{padding:8px;border:none;border-radius:6px;background:#ddd;cursor:pointer;}
+.total{margin-top:10px;font-weight:bold;}
+</style>
+</head>
+
+<body>
+
+<script>
+if(!localStorage.getItem("loggedIn")) window.location.href="/login.html"
+</script>
+
+<div class="container">
+
+<div class="nav">
+<button onclick="go('/index.html')">Home</button>
+<button onclick="go('/academic.html')">Teaching</button>
+<button onclick="go('/research.html')">Research</button>
+<button onclick="go('/extension.html')">Extension</button>
+<button onclick="go('/tracker.html')">Tracker</button>
+<button onclick="go('/summary.html')">Summary</button>
+</div>
+
+<h2>📘 Teaching Criteria</h2>
+
+<table>
+<tr><th>Activity</th><th>Points</th></tr>
+<tr><td>Student Credit Hours</td><td>5</td></tr>
+<tr><td>Student Feedback</td><td>3</td></tr>
+<tr><td>Class Performance</td><td>4</td></tr>
+<tr><td>Slow Learners Initiative</td><td>4</td></tr>
+<tr><td>Course Development</td><td>5</td></tr>
+<tr><td>Course File</td><td>2</td></tr>
+<tr><td>Value Added Program</td><td>2</td></tr>
+<tr><td>Mentor</td><td>3</td></tr>
+<tr><td>Industry Connect</td><td>2</td></tr>
+<tr><td>Publication</td><td>3</td></tr>
+</table>
+
+<div class="total">Total Points: 33</div>
+
+</div>
+
+<script>
+function go(p){window.location.href=p}
+</script>
+
+</body>
+</html>

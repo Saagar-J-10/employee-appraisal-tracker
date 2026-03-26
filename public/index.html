@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Appraisal Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ✅ LOGIN PROTECTION -->
+<script>
+if(!localStorage.getItem("loggedIn")){
+  window.location.href = "/login.html"
+}
+</script>
+
+<header>
+<h1>Employee Appraisal Tracker</h1>
+<p>Faculty Evaluation System</p>
+
+<!-- 🔥 LOGOUT BUTTON -->
+<button onclick="logout()" style="position:absolute; top:15px; right:15px;">
+Logout
+</button>
+
+</header>
+
+<nav>
+<a href="/index.html" class="active">Home</a>
+<a href="/academic.html">Teaching</a>
+<a href="/research.html">Research</a>
+<a href="/extension.html">Extension</a>
+<a href="/tracker.html">Tracking</a>
+<a href="/summary.html">Summary</a>
+</nav>
+
+<div class="container">
+
+<div class="hero">
+<h2>Overview</h2>
+<p>Evaluation system based on 100 points. Minimum 70 required.</p>
+</div>
+
+<div class="grid">
+
+<div class="card">
+<h3>📘 Teaching</h3>
+<p>Total 33 points</p>
+<a href="/academic.html" class="btn">Open</a>
+</div>
+
+<div class="card">
+<h3>🔬 Research</h3>
+<p>Total 48 points</p>
+<a href="/research.html" class="btn">Open</a>
+</div>
+
+<div class="card">
+<h3>🏢 Extension</h3>
+<p>Total 19 points</p>
+<a href="/extension.html" class="btn">Open</a>
+</div>
+
+<div class="card">
+<h3>📊 Tracking</h3>
+<p>Track your performance</p>
+<a href="/tracker.html" class="btn">Open</a>
+</div>
+
+<div class="card">
+<h3>📈 Summary</h3>
+<p>View overall results</p>
+<a href="/summary.html" class="btn">Open</a>
+</div>
+
+</div>
+
+</div>
+
+<footer>
+© 2026 Appraisal Tracker
+</footer>
+
+<script>
+function logout(){
+  localStorage.removeItem("loggedIn")
+  window.location.href = "/login.html"
+}
+</script>
+
+</body>
+</html>
